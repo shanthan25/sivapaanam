@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import styles from './SideMenu.style';
+import styles from './SideMenu/SideMenu.style';
 import {NavigationActions} from 'react-navigation';
-import {ScrollView, Text, View} from 'react-native';
+import {ScrollView, Text, View, Image} from 'react-native';
 
-class SideMenu extends Component {
+class Menu extends Component {
     navigateToScreen = (route) => () => {
         const navigateAction = NavigationActions.navigate({
             routeName: route
@@ -17,8 +17,15 @@ class SideMenu extends Component {
             <View style={styles.container}>
                 <ScrollView>
                     <View>
+                        {<Image
+                            source={require('./images/11.jpg')} style = {{ width: 400, height: 130 }}
+                        />}
+
+                        <View style={styles.navSectionStyle2}>
+                        </View>
+
                         <Text style={styles.sectionHeadingStyle}>
-                            Section 1
+                            Section 1a
                         </Text>
                         <View style={styles.navSectionStyle}>
                             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page1')}>
@@ -28,7 +35,7 @@ class SideMenu extends Component {
                     </View>
                     <View>
                         <Text style={styles.sectionHeadingStyle}>
-                            Section 2
+                            Section 2b
                         </Text>
                         <View style={styles.navSectionStyle}>
                             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page2')}>
@@ -40,16 +47,16 @@ class SideMenu extends Component {
                         </View>
                     </View>
                 </ScrollView>
-                <View style={styles.footerContainer}>
+                {/* <View style={styles.footerContainer}>
                     <Text>This is my fixed footer</Text>
-                </View>
+                </View>*/}
             </View>
         );
     }
 }
 
-SideMenu.propTypes = {
+Menu.propTypes = {
     navigation: PropTypes.object
 };
 
-export default SideMenu;
+export default Menu;
