@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import styles from './SideMenu/SideMenu.style';
 import {NavigationActions} from 'react-navigation';
 import {ScrollView, Text, View, Image} from 'react-native';
+import Categories from "./pages/Categories";
 
 class Menu extends Component {
     navigateToScreen = (route) => () => {
@@ -18,34 +19,38 @@ class Menu extends Component {
                 <ScrollView>
                     <View>
                         {<Image
-                            source={require('./images/11.jpg')} style = {{ width: 400, height: 130 }}
+                            source={require('./images/logo.png')} style = {{ width: 300, height: 290 }}
                         />}
 
-                        <View style={styles.navSectionStyle2}>
-                        </View>
+                        {/*<View style={styles.navSectionStyle2}>
+                        </View>*/}
 
-                        <Text style={styles.sectionHeadingStyle}>
+                        {/*<Text style={styles.sectionHeadingStyle}>
                             Section 1a
-                        </Text>
+                        </Text>*/}
                         <View style={styles.navSectionStyle}>
                             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page1')}>
-                                Page1
+                                Products
+                            </Text>
+                            <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page2')}>
+                                About Us
+                            </Text>
+                            <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Categories')}>
+                                Categories
+                            </Text>
+                            <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page3')}>
+                                Contact Us
                             </Text>
                         </View>
                     </View>
-                    <View>
+                    {/*<View>
                         <Text style={styles.sectionHeadingStyle}>
                             Section 2b
                         </Text>
                         <View style={styles.navSectionStyle}>
-                            <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page2')}>
-                                Page2
-                            </Text>
-                            <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page3')}>
-                                Page3
-                            </Text>
+
                         </View>
-                    </View>
+                    </View>*/}
                 </ScrollView>
                 {/* <View style={styles.footerContainer}>
                     <Text>This is my fixed footer</Text>

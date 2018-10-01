@@ -5,7 +5,7 @@ export default {
         backgroundColor: 'black'
     },
     navItemStyle: {
-        padding: 10
+        padding: 10, backgroundColor: 'black', borderWidth: 2, borderBottomColor: 'orange', color: 'white'
     },
     navSectionStyle: {
         backgroundColor: 'lightgrey'

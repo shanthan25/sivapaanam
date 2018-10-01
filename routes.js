@@ -3,6 +3,10 @@ import Page2 from './Page2/Page2';
 import Page3 from './Page3/Page3';
 import Menu from './Menu';
 import {createDrawerNavigator} from 'react-navigation';
+import Products from "./pages/Products";
+import ProductView from "./pages/ProductView";
+import Categories from "./pages/Categories";
+
 
 export default createDrawerNavigator({
     Page1: {
@@ -13,6 +17,15 @@ export default createDrawerNavigator({
     },
     Page3: {
         screen: Page3
+    },
+    Categories: {
+        screen: Categories
+    },
+    Products: {
+        screen: Products
+    },
+    ProductView: {
+        screen: ProductView
     }
 }, {
     contentComponent: Menu,

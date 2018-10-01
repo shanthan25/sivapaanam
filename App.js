@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import { Platform, StyleSheet, View, Text, Image, TouchableOpacity, Alert, AppRegistry } from 'react-native';
 import Router from './routes';
@@ -7,7 +8,6 @@ export default class Myapp extends Component<{}>
     constructor(){
         super();
         this.state={
-            isVisible : true,
         }
     }
 

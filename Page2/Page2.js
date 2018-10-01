@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, Text, View, Button } from 'react-native';
+import { AppRegistry, StyleSheet, Text, View, Button, TouchableHighlight } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 
 class MainActivity extends Component {
@@ -13,12 +13,20 @@ class MainActivity extends Component {
 
     render()
     {
+        const { navigate } = this.props.navigation;
         return(
             <View style = { styles.MainContainer }>
                 <View style={{marginBottom: 20}}>
                     <Text style = { styles.TextStyle }> This is MainActivity </Text>
                 </View>
                 <Button onPress = { this.FunctionToOpenSecondActivity } title = 'Click Here To Open Second Activity'/>
+
+                <TouchableHighlight
+                    onPress={() => navigate('Page3')}
+                    style={[styles.button, {backgroundColor: '#8E84FB'}]}>
+                    <Text style={styles.buttonText}>Go To Screen One </Text>
+                </TouchableHighlight>
+
             </View>
         );
     }
