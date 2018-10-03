@@ -30,7 +30,7 @@ class Menu extends Component {
                         </Text>*/}
                         <View style={styles.navSectionStyle}>
                             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page1')}>
-                                Products
+                                Home
                             </Text>
                             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page2')}>
                                 About Us

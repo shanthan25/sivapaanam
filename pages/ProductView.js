@@ -1,42 +1,69 @@
 import React, { Component } from 'react';
-import { AppRegistry, SectionList, StyleSheet, Text, View, Image, TextInput, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import { AppRegistry, SectionList, StyleSheet, Text, View, Image, TextInput, ScrollView, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import NumericInput,{ calcSize } from 'react-native-numeric-input'
 import { RadioButtons, SegmentedControls } from 'react-native-radio-buttons';
+import { AsyncStorage } from "react-native"
 
-const users = [
-    {
-        name: 'brynn',
-        avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-    }
-]
-
-/*quantity = 1;
-amnt = 15;*/
 export default class ProductView extends Component {
     constructor(state){
         super(state)
-        this.state = {
-           /* value: 2,*/
-            amount:1,
+        this.state = {min: 0, max: 99, default: 0, num: 0, color: '#33c9d6', numColor: '#333', numBgColor: 'white',
+            showBorder: true, fontSize: 14, btnFontSize: 14, buttonTextColor: 'white', disabled: false, width: 90, height: 30
+        };
+    }
+    componentWillReceiveProps (nextProps) {
+        if (nextProps.disabled) {
+            this.setState({disabled: nextProps.disabled});
         }
-        /*this.amount = 1*/
+        if (nextProps.min) {
+            this.setState({min: nextProps.min
+            });
+        }
+        if (nextProps.max) {
+            this.setState({max: nextProps.max});
+        }
+        if (nextProps.value !== false) {
+            this.setState({num: nextProps.value});
+        }
     }
-    changeAmount = (amount) => {
-        this.setState({amount})
-        console.log('amount is '+amount)
-        console.log('amount is '+this.state.amount)
-        /*this.state = {
-            amount:amount
-        }*/
+
+    _onNumChange (num) {
+        if (this.props.onNumChange) this.props.onNumChange(num);
+    };
+
+    _increase () {
+        //console.log(this.state);
+        if (this.state.disabled) return;
+        if (this.state.max > this.state.num) {
+            var num = this.state.num + 1;
+            if (typeof this.state.value === 'undefined') {
+                this.setState({num: num});
+            };
+            this._onNumChange(num);
+        }
+    };
+
+    _decrease () {
+        if (this.state.disabled) return;
+        if (this.state.min < this.state.num) {
+            var num = this.state.num - 1;
+            if (typeof this.state.value === 'undefined') {
+                this.setState({num: num});
+            };
+            this._onNumChange(num);
+        }
+    };
+    static navigationOptions = {title: 'Product Details'};
+    addToCart = (product) => {
+        product.myQuantity = this.state.num;
+        //let UID123_object = {name: 'Chrise', age: 35};
+        AsyncStorage.setItem('data', JSON.stringify(product));
+        AsyncStorage.getItem('data', (err, result) => {
+            console.log('result');  console.log(result);
+        });
     }
-    /*setState2 = (value) => {
-        quantity =  quantity + value.value
-        this.state.value = quantity + value.value
-        console.log('value is '+value.value)
-        console.log('quantity is '+quantity)
-    }*/
-    state = {}
+
     render() {
         const product = this.props.navigation.state.params.item;
         return (
@@ -48,69 +75,77 @@ export default class ProductView extends Component {
                         The idea with React Native Elements is more about component structure than actual design.
                     </Text>
 
-                       {/* <Button onPress={this.IncrementItem} title='+'/>
-                        <Button onPress={this.DecreaseItem} title='-'/>*/}
-                        {/*<Button onPress={this.ToggleClick} title='n'>
-                            { this.state.show ? 'Hide number' : 'Show number' }
-                        />*/}
-                        {/*{ this.state.show ? <Text>{ this.state.clicks }</Text> : '' }*/}
-                    {/*{this.quantity}*/}
-                    {/*{this.state.amount}*/}
-
-                    {/*<Text style={{marginBottom: 10}}>The {this.state.amount}</Text>*/}
-                    <TextInput style={{height: 40, width: 50, marginLeft: 10, borderColor: 'gray', borderWidth: 1}} value={ this.state.amount.toString() }/>
+                    <View style={[styles.container2,
+                        { borderColor: this.state.showBorder ? this.state.color : 'transparent' },
+                        { width: this.state.width } ]}>
+                    <TouchableOpacity
+                        style={[styles.btn,
+                            { backgroundColor: this.state.color },
+                            { borderColor: this.state.showBorder ? this.state.color : 'transparent' },
+                            { height: this.state.height } ]}
+                        onPress={() => this._decrease()}>
+                        <Text style={[styles.btnText,
+                            { color: this.state.buttonTextColor, fontSize: this.state.btnFontSize }]}>-</Text>
+                    </TouchableOpacity>
+                    <View style={[styles.num,
+                        { borderColor: this.state.showBorder ? this.state.color : 'transparent', backgroundColor: this.state.numBgColor, height: this.state.height
+                        }]}>
+                        <Text style={[styles.numText, {color: this.state.numColor, fontSize: this.state.fontSize}]}>{this.state.num}</Text>
+                    </View>
+                    <TouchableOpacity
+                        style={[styles.btn,
+                            { backgroundColor: this.state.color },
+                            { borderColor: this.state.showBorder ? this.state.color : 'transparent' },
+                            { height: this.state.height }]}
+                        onPress={() => this._increase()}>
+                        <Text style={[styles.btnText,
+                            { color: this.state.buttonTextColor, fontSize: this.state.btnFontSize
+                            }]}>+</Text>
+                    </TouchableOpacity>
+                    </View>
                     {/*https://gomakethings.com/converting-strings-to-numbers-with-vanilla-javascript/*/}
-                    {/*your props you are passing numerical value of value.You have to passed it in the form of string.  use value={String(value)} rather than value={${value}} */}
-                    <NumericInput value={this.state.amount} onChange={(amount) => { this.changeAmount(amount) }} totalWidth={150}
-                        totalHeight={35} minValue={0} maxValue={9999} step={1} iconStyle={{ fontSize: 15, color: '#434A5E' }}
-                        inputStyle={{ fontSize: 18, color: '#434A5E' }} valueType='real' textColor='#B0228C' borderColor='#C7CBD6'
-                        rightButtonBackgroundColor='#C7CBD6' leftButtonBackgroundColor='#C7CBD6'/>
 
-                    <Text style={{marginBottom: 10}}>Total {this.state.amount * product.price}</Text>
-                    <Button icon={{name: 'code'}} backgroundColor='#03A9F4'
+                    <Text style={{marginBottom: 10}}>Total {this.state.num * product.price}</Text>
+                    <Button icon={{name: 'code'}} backgroundColor='#03A9F4' onPress={this.addToCart(product)}
                             buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}} title='ADD TO CART' />
                     <ScrollView>
-                        {this.renderSegmentControlClone()}
+                        {this.renderCustomSegmentControlClone(product)}
                     </ScrollView>
-
                 </Card>
-
-               {/* {global.products.map(r => <Text style = { styles.textStyle }> {r.name} </Text>)}
-                <SectionList
-                    sections={[
-                        {title: 'J', data: global.products},
-                    ]}
-                    renderItem={({item}) => <Text style={styles.item}  onPress={() => navigate('productView')}>{item.name}</Text>}
-                    renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
-                    keyExtractor={(item, index) => index}
-                />*/}
             </View>
         );
     }
-    renderSegmentControlClone(){
+    renderCustomSegmentControlClone(product){
         const options = [
-            '1G',
-            '1/8',
-            '1/4',
-            '1/2',
-            'OZ',
+            { label:'1G       $'+product.price, value: '1G' }, { label:'1/8       $'+product.price/8, value: '1/8'},
+            { label:'1/4       $'+product.price/4, value: '1/4' }, { label:'1/2       $'+product.price/2, value: '1/2' },
+            { label:'OZ       $51.99', value: 'OZ' },
         ];
 
-        function setSelectedOption(selectedSegment){
+        function setSelectedOption(option){
             this.setState({
-                selectedSegment
+                selectedCustomSegment: option,
             });
         }
 
         return (
             <View style={{marginTop: 10, padding: 20, backgroundColor: 'white'}}>
                 <Text style={{paddingBottom: 10, fontWeight:'bold', color:'red'}}>Warning Text</Text>
-                <SegmentedControls
+                <SegmentedControls tint= {'#2799FA'} selectedTint= {'white'} backTint= {'white'}
+                    optionStyle= {{fontSize: 12, fontWeight: 'bold'}}
+                    containerStyle= {{marginLeft: 10, marginRight: 10,}}
                     options={ options }
                     onSelection={ setSelectedOption.bind(this) }
-                    selectedOption={ this.state.selectedSegment }
+                    selectedOption={ this.state.selectedCustomSegment }
+                    extractText={ (option) => option.label }
+                    testOptionEqual={ (a, b) => {
+                        if (!a || !b) {
+                            return false;
+                        }
+                        return a.label === b.label
+                    }}
                 />
-                <Text style={{marginTop: 10}}>Selected option: {this.state.selectedSegment || 'none'}</Text>
+                <Text style={{marginTop: 10}}>Selected option: {this.state.selectedCustomSegment&& this.state.selectedCustomSegment.value || 'none'}</Text>
             </View>);
     }
 }
@@ -123,39 +158,19 @@ const fetchAndLog = async () => {
 fetchAndLog();
 
 const styles = StyleSheet.create({
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
-    container: {
-        flex: 1,
-        paddingTop: 22
-    },
-    sectionHeader: {
-        paddingTop: 2,
-        paddingLeft: 10,
-        paddingRight: 10,
-        paddingBottom: 2,
-        fontSize: 14,
-        fontWeight: 'bold',
-        backgroundColor: 'rgba(247,247,247,1.0)',
-    },
-    item: {
-        padding: 10, paddingTop: 38,
-        fontSize: 25,color: 'orange', textAlign: 'center',
-        height: 120, backgroundColor: 'black',borderWidth: 5.5,
-        borderColor: 'white',
-    },
+    btn: {flex: 1, alignItems: 'center', justifyContent: 'center'},
+    btnText: {color: 'white', textAlign: 'center'},
+    num: {flex: 1, alignItems: 'center', justifyContent: 'center'},
+    numText: {textAlign: 'center'},
+    welcome: {fontSize: 20, textAlign: 'center', margin: 10,},
+    instructions: {textAlign: 'center', color: '#333333', marginBottom: 5,},
+    container: {flex: 1, paddingTop: 22},
+    container2: {borderWidth: 0.5, borderRadius: 4, flexDirection: 'row', overflow: 'hidden'},
+    sectionHeader: {paddingTop: 2, paddingLeft: 10, paddingRight: 10, paddingBottom: 2, fontSize: 14, fontWeight: 'bold', backgroundColor: 'rgba(247,247,247,1.0)',},
+    item: {padding: 10, paddingTop: 38, fontSize: 25,color: 'orange', textAlign: 'center', height: 120, backgroundColor: 'black',borderWidth: 5.5, borderColor: 'white',},
 })
 
 // skip this line if using Create React Native App
-AppRegistry.registerComponent('AwesomeProject', () => ProductView);
-
+//AppRegistry.registerComponent('AwesomeProject', () => ProductView);
 
 //export default ProductView;
