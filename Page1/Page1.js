@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Text, View, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import SideMenu from 'react-native-side-menu';
-import Menu from '../Menu';
+import Menu from '../pages/Menu';
 
 const image = require('../images/menu.png');
 

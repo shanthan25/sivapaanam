@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
-import styles from './SideMenu/SideMenu.style';
+import styles from '../SideMenu/SideMenu.style';
 import {NavigationActions} from 'react-navigation';
 import {ScrollView, Text, View, Image} from 'react-native';
-import Categories from "./pages/Categories";
+import Categories from "./Categories";
 
 class Menu extends Component {
     navigateToScreen = (route) => () => {
@@ -19,7 +19,7 @@ class Menu extends Component {
                 <ScrollView>
                     <View>
                         {<Image
-                            source={require('./images/logo.png')} style = {{ width: 300, height: 290 }}
+                            source={require('../images/logo.png')} style = {{ width: 300, height: 290 }}
                         />}
 
                         {/*<View style={styles.navSectionStyle2}>
@@ -37,6 +37,9 @@ class Menu extends Component {
                             </Text>
                             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Categories')}>
                                 Categories
+                            </Text>
+                            <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Cart')}>
+                                Cart
                             </Text>
                             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page3')}>
                                 Contact Us

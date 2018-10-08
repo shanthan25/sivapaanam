@@ -6,7 +6,7 @@ import { RadioButtons, SegmentedControls } from 'react-native-radio-buttons';
 import { AsyncStorage } from "react-native"
 import { Col, Row, Grid } from "react-native-easy-grid";
 
-export default class ProductView extends Component {
+export default class Checkout extends Component {
     constructor(state){
         super(state)
         this.state = {min: 0, max: 99, default: 0, num: 0, color: '#33c9d6', numColor: '#333', numBgColor: 'white',
@@ -45,7 +45,7 @@ export default class ProductView extends Component {
         }
     };
 
-    _decrease () {  console.log('val54');
+    _decrease () {
         if (this.state.disabled) return;
         if (this.state.min < this.state.num) {
             var num = this.state.num - 1;
@@ -55,40 +55,14 @@ export default class ProductView extends Component {
             this._onNumChange(num);
         }
     };
-    static navigationOptions = {title: 'Product Details'};
-    _addToCart (product)  {  //console.log('result34'+[product]);   //addToCart = (product) => {
-        //console.log('result35'+JSON.stringify([product]));
-       // product.myQuantity = this.state.num;
+    static navigationOptions = {title: 'Checkout'};
+    addToCart = (product) => {
+        product.myQuantity = this.state.num;
         //let UID123_object = {name: 'Chrise', age: 35};
-
-
-
-       let result2 = [{"id":3,"name":"Carrot","category":"vegetables","price":82,"image":"carrot.jpg","quantity":5,"discount":5,"color":"#000000"}];
-        let product2 = {"id":4,"name":"Mango","category":"vegetables","price":100,"image":"mango.jpg","quantity":5,"discount":12,"color":"#000000"};
-            [result2].push(product2);
-        console.log('result 2'+JSON.stringify([result2]));
-
-        /*AsyncStorage.getItem('myCart', (err, result) => {
-            if(result){  console.log('val5'+result);  console.log('a');
-                //this.myItems = val;     //console.log('my_items is 2=', this.myItems);
-                //val.push(JSON.stringify(item1));
-                console.log('result 1'+[result]);
-                console.log('product 1'+JSON.stringify(product));
-                [result].push(product);
-                console.log('result 2'+[result]);
-                AsyncStorage.setItem('myCart', JSON.stringify(result));
-            }
-            else{  console.log('b');
-                console.log('result 2'+[result]);
-                console.log('product 2'+JSON.stringify([product]));
-                AsyncStorage.setItem('myCart',JSON.stringify([product]));    //this.storage.set('my_items', JSON.parse("[" + item1 + "]"));
-            }
-        });*/
-        //AsyncStorage.removeItem('myCart')
-        /*AsyncStorage.setItem('myCart', JSON.stringify(product));*/
-        /*AsyncStorage.getItem('myCart', (err, result) => {
-            console.log('myCart3');  console.log(result);
-        });*/
+        AsyncStorage.setItem('data', JSON.stringify(product));
+        AsyncStorage.getItem('data', (err, result) => {
+            console.log('result');  console.log(result);
+        });
     }
 
     render() {
@@ -140,7 +114,7 @@ export default class ProductView extends Component {
                         </Col>
                         <Col size={1}><Text style={{marginBottom: 10}}>${this.state.num * product.price}</Text></Col>
                         <Col size={2}>
-                            <Button backgroundColor='#03A9F4' onPress={() => this._addToCart(product)}
+                            <Button backgroundColor='#03A9F4' onPress={this.addToCart(product)}
                                     buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}} title='ADD TO CART' />
                         </Col>
                     </Grid>
@@ -208,6 +182,6 @@ const styles = StyleSheet.create({
 })
 
 // skip this line if using Create React Native App
-//AppRegistry.registerComponent('AwesomeProject', () => ProductView);
+//AppRegistry.registerComponent('AwesomeProject', () => Checkout);
 
-//export default ProductView;
+//export default Checkout;
