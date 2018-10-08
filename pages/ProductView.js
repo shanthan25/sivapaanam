@@ -56,39 +56,31 @@ export default class ProductView extends Component {
         }
     };
     static navigationOptions = {title: 'Product Details'};
-    _addToCart (product)  {  //console.log('result34'+[product]);   //addToCart = (product) => {
-        //console.log('result35'+JSON.stringify([product]));
-       // product.myQuantity = this.state.num;
-        //let UID123_object = {name: 'Chrise', age: 35};
 
-
-
-       let result2 = [{"id":3,"name":"Carrot","category":"vegetables","price":82,"image":"carrot.jpg","quantity":5,"discount":5,"color":"#000000"}];
-        let product2 = {"id":4,"name":"Mango","category":"vegetables","price":100,"image":"mango.jpg","quantity":5,"discount":12,"color":"#000000"};
-            [result2].push(product2);
-        console.log('result 2'+JSON.stringify([result2]));
-
-        /*AsyncStorage.getItem('myCart', (err, result) => {
-            if(result){  console.log('val5'+result);  console.log('a');
-                //this.myItems = val;     //console.log('my_items is 2=', this.myItems);
-                //val.push(JSON.stringify(item1));
-                console.log('result 1'+[result]);
-                console.log('product 1'+JSON.stringify(product));
-                [result].push(product);
-                console.log('result 2'+[result]);
-                AsyncStorage.setItem('myCart', JSON.stringify(result));
+    _addToCart (product)  {
+        AsyncStorage.getItem('myCart', (err, result) => {
+            product.myQuantity = this.state.num;
+            const item = [product];
+            if (result !== null) {
+                console.log('Data Found', result);
+                var newItem = JSON.parse(result).concat(item);
+                AsyncStorage.setItem('myCart', JSON.stringify(newItem));
+            } else {
+                console.log('Data Not Found');
+                AsyncStorage.setItem('myCart', JSON.stringify(item));
             }
-            else{  console.log('b');
-                console.log('result 2'+[result]);
-                console.log('product 2'+JSON.stringify([product]));
-                AsyncStorage.setItem('myCart',JSON.stringify([product]));    //this.storage.set('my_items', JSON.parse("[" + item1 + "]"));
-            }
-        });*/
-        //AsyncStorage.removeItem('myCart')
-        /*AsyncStorage.setItem('myCart', JSON.stringify(product));*/
-        /*AsyncStorage.getItem('myCart', (err, result) => {
-            console.log('myCart3');  console.log(result);
-        });*/
+        });
+    }
+
+    get(product) {
+        AsyncStorage.getItem('myCart', (err, result2) => {
+            console.log('myCart');  console.log(result2);
+        });
+    }
+
+    clear() {
+        AsyncStorage.removeItem('myCart'); console.log('cleared');
+        //AsyncStorage.removeItem('savedIds'); console.log('cleared');
     }
 
     render() {
@@ -142,8 +134,12 @@ export default class ProductView extends Component {
                         <Col size={2}>
                             <Button backgroundColor='#03A9F4' onPress={() => this._addToCart(product)}
                                     buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}} title='ADD TO CART' />
+
+
                         </Col>
                     </Grid>
+                    <Button style={{width: 50}} backgroundColor='green' onPress={() => this.clear()} title='Clear' />
+                    <Button style={{width: 50}} backgroundColor='#05A9F6' onPress={() => this.get(product)} title='Get' />
                     <ScrollView style={{height: 300}}>
                         {this.renderCustomSegmentControlClone(product)}
                     </ScrollView>

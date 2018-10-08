@@ -49,8 +49,8 @@ class Cart extends Component {
 
 const fetchAndLog = async () => {
     AsyncStorage.getItem('myCart', (err, result) => {
-        global.products2 = [result];
-        console.log('result33');  console.log([result]);
+        global.products2 = JSON.parse(result)   //result;
+        console.log('result33');  console.log(JSON.parse(result));
     });
 }
 fetchAndLog();
