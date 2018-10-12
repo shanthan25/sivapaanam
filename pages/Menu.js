@@ -41,6 +41,12 @@ class Menu extends Component {
                             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Cart')}>
                                 Cart
                             </Text>
+                            <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Test')}>
+                                Test
+                            </Text>
+                            <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Test2')}>
+                                Test2
+                            </Text>
                             <Text style={styles.navItemStyle} onPress={this.navigateToScreen('Page3')}>
                                 Contact Us
                             </Text>

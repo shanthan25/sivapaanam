@@ -3,4 +3,11 @@
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="JSX" />
   </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/pages/animate.custom.js" />
+    <file url="file://$PROJECT_DIR$/pages/Style.js" />
+    <file url="file://$PROJECT_DIR$/pages/styles.js" />
+    <file url="file://$PROJECT_DIR$/ScreenThree.js" />
+    <file url="file://$PROJECT_DIR$/styles.js" />
+  </component>
 </project>
