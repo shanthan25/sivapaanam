@@ -28,7 +28,7 @@ export default class Shipping extends Component {
                         497, Evergreen Road Roseville {'\n'} CA 95673
                     </Text>
                 </Card>
-
+                {/*isSelected={(value) => value=='express' ? 'true' : 'false'}*/}
                 <Card title={'Delivery'}>
                     <Grid style={{marginBottom:210}}>
                         <Col style={{height:210}}><RadioForm radio_props={radio_props} initial={0} formHorizontal={false} labelHorizontal={true} buttonColor={'#2196f3'}
@@ -54,7 +54,9 @@ export default class Shipping extends Component {
 const styles = StyleSheet.create({
     container: {
        // flex: 1,
+        backgroundColor:'white',
         justifyContent: 'center',
+        //height: 790
     },
     buttonContainer: {
         margin: 20

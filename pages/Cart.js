@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {AppRegistry, SectionList, StyleSheet, Text, View, Image, AsyncStorage, TouchableOpacity} from 'react-native';
+import {AppRegistry, SectionList, StyleSheet, Text, View, Image, AsyncStorage, TouchableOpacity, FlatList} from 'react-native';
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import {createStackNavigator} from "react-navigation";
 import Checkout from "../pages/Checkout";
@@ -14,53 +14,67 @@ class Cart extends Component {
         this.state = {min: 0, totalPrice: 0, max: 99, default: 0, num: 0, color: '#33c9d6', numColor: '#333', numBgColor: 'white',
             showBorder: true, fontSize: 14, btnFontSize: 14, buttonTextColor: 'white', disabled: false, width: 90, height: 30
         };
+        //this.fetchData();
     }
-    /*state = {
+    state = {
         'pro': ''
     }
-    componentDidMount() {
+    componentWillMount() {
+        this.fetchData();
+    }
+    fetchData () {
+        global.total =0;
         AsyncStorage.getItem('myCart', (err, value) => {
-            this.setState({ 'pro': value });
+            JSON.parse(value).map((data) => {
+                global.total += data.price*data.myQuantity;
+            });
+            console.log('total '+global.total);
+            //global.products2 = JSON.parse(result);
+            this.setState({ 'pro': JSON.parse(value) });
         });
-    }*/
+    }
+    setData() {
+        AsyncStorage.setItem('myCart',JSON.stringify(this.state.pro));  console.log('item updated '+JSON.stringify(this.state.pro));
+    }
     _onNumChange (num) {
         if (this.props.onNumChange) this.props.onNumChange(num);
     };
-    _increase (item: any) { console.log('val '+item.myQuantity);
+    _increase (item: any) { this.setData();      console.log('val '+item.myQuantity);
         //console.log(this.state);
-        if (this.state.disabled) return;
-        if (this.state.max > item.myQuantity) {        /*item.myQuantity instaed of this.state.num*/
+        item.myQuantity++;
+        /*if (this.state.disabled) return;
+        if (this.state.max > item.myQuantity) {
             var num = item.myQuantity + 1;
             if (typeof this.state.value === 'undefined') {
                 this.setState({num: num});
                 // this.setState({ [item.num]: num });
             };
             this._onNumChange(num);
-        }
+        }*/
     };
-    _decrease (item: any) {  console.log('val'+item.myQuantity);
-        if (this.state.disabled) return;
+    _decrease (item: any) {  this.setData();        console.log('val'+item.myQuantity);
+        item.myQuantity--;
+        /*if (this.state.disabled) return;
         if (this.state.min < item.myQuantity) {
             var num = item.myQuantity - 1;
             if (typeof this.state.value === 'undefined') {
                 this.setState({num: num});
             };
             this._onNumChange(num);
-        }
+        }*/
     };
     static navigationOptions = {title: 'Cart'};
     FunctionToOpenSecondActivity = () =>
     {
         this.props.navigation.navigate('Checkout');
-
     }
-    componentWillMount(){
+    /*componentWillMount(){
         console.log('b');
         AsyncStorage.getItem('myCart', (err, result) => {
             global.products2 = JSON.parse(result);   //result;
             //console.log('result33');  console.log(JSON.parse(result));
         });
-    }
+    }*/
     removeItem(item) {
         AsyncStorage.getItem('myCart', (err, result2) => {
            // console.log('myCart'+ item.id);  console.log(result2);
@@ -73,8 +87,9 @@ class Cart extends Component {
             //console.log('after - '+JSON.stringify(myArr));
             console.log(JSON.stringify(item.name)+' removed');
             AsyncStorage.setItem('myCart', JSON.stringify(myArr));
+            this.fetchData();
         });
-        this.props.navigation.navigate('Checkout');
+
     }
     render() {
         const { navigate } = this.props.navigation;
@@ -83,19 +98,17 @@ class Cart extends Component {
             <View style={styles.container}>
                 {/*{global.products.map(r => <Text style = { styles.textStyle }> {r.name} </Text>)}*/}
                 <Image source={require('../images/cart.jpg')}/>
-                <SectionList
-                    sections={[
-                        {title: 'J', data: global.products2},
-                    ]}
-                    renderItem={({item}) =>
 
+                <FlatList
+                    data={this.state.pro}
+                    renderItem={({item}) =>
                         <View style={{flex:1, flexDirection: 'row', borderBottomColor: '#bbb',borderBottomWidth: 1, backgroundColor: 'green',}} >
                             <Grid style={{paddingBottom:10}}>
                                 <Col size={25}><Image source = {{ uri: 'http://shopapi.enxonetech.com/shop/public/images/products/'+item.image }} style={styles.imageViewContainer} />
                                 </Col>
                                 <Col size={60}>
                                     <Text style={styles.textViewContainer}> <Text style={{fontSize: 20, color: 'orange',
-                                    fontWeight: 'bold'}}>{item.name}</Text> {'\n'} <Text style={{color: 'white'}}>The idea with React Native Elements is more about component structure than actual design </Text> {'\n'}{'\n'}
+                                        fontWeight: 'bold'}}>{item.name}</Text> {'\n'} <Text style={{color: 'white'}}>The idea with React Native Elements is more about component structure than actual design </Text> {'\n'}{'\n'}
                                     </Text>
                                     <View style={[styles.container2,
                                         { borderColor: this.state.showBorder ? this.state.color : 'transparent' },
@@ -127,28 +140,30 @@ class Cart extends Component {
                                     </View>
                                 </Col>
                                 <Col size={15}>
-                                    <Text style={{textAlign: 'right', color: 'black', fontSize: 17}}> ${item.price*item.myQuantity} </Text>
+                                    <Text style={{textAlign: 'right', color: 'black', fontSize: 15}}> ${item.price*item.myQuantity} </Text>
                                     <Text onPress={() => this.removeItem(item)} style={{textAlign: 'right', color: 'red', fontSize: 25}}> X </Text>
                                 </Col>
                             </Grid>
 
                             {/*<Text onPress={this.GetItem.bind(this, item.name)} style={styles.textViewContainer} >{item.name}</Text>*/}
                         </View>
-                        /*<Card
-                            title={item.name}
-                            image={{uri: 'http://shopapi.enxonetech.com/shop/public/images/products/'+item.image}}>
-                            <Text style={{marginBottom: 10}} onPress={() => navigate('Checkout', { item: item })}>
-                                The idea with React Native Elements is more about component structure than actual design.
-                            </Text>
-                        </Card>*/
-                        /*<Text style={styles.item}  onPress={() => navigate('Checkout', { item: item })}>{item.name}</Text>*/ }
+                    }
+                    keyExtractor={item => item.name}
+                    ItemSeparatorComponent={this.renderSeparator}
+                />
+
+                {/*<SectionList
+                    sections={[{title: 'J', data: global.products2},]}
+                    renderItem={({item}) =>
+                            <Text>{item.name}</Text> }
                     renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
                     keyExtractor={(item, index) => index}
-                />
+                />*/}
+
                 <Card >
                     <Grid style={{paddingBottom: 30}}>
                         <Col size={1}><Text style={{color: 'blue'}}>
-                            $50.96
+                            ${global.total}
                         </Text>
                         </Col>
                         <Col size={1}>
@@ -163,26 +178,29 @@ class Cart extends Component {
     }
 }
 
-const fetchAndLog = async () => { console.log('a4');
+/*const fetchAndLog = async () => { console.log('a4');
+    global.total =0;
     AsyncStorage.getItem('myCart', (err, result) => {
         if(result){
+            JSON.parse(result).map((data) => {
+                global.total += data.price*data.myQuantity; //console.log(global.total);
+            });
+            console.log('total '+this.total);
             global.products2 = JSON.parse(result);
         }
         else {
             global.products2 = []   //result;
         }
-
       //  console.log('result33');  console.log(JSON.parse(result));
-        /*global.products2.forEach( (value, key, index) => {
+        /!*global.products2.forEach( (value, key, index) => {
             this.state.totalPrice +=  value.price * value.quantity;
             console.log(value);
             console.log(value.price);
             console.log(this.state.totalPrice);
-        });*/
-
+        });*!/
     });
-}
-fetchAndLog();
+}*/
+//fetchAndLog();
 
 const styles = StyleSheet.create({
     textViewContainer: {textAlignVertical:'center', width:'100%', paddingLeft:20},
@@ -208,7 +226,3 @@ export default Project = createStackNavigator(
         Confirm: { screen: Confirm }
     });
 
-// skip this line if using Create React Native App
-//AppRegistry.registerComponent('AwesomeProject', () => Products);
-
-//export default Products;

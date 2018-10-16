@@ -33,40 +33,25 @@ export default class ButtonBasics extends Component {
                     How would you like to pay?
                 </Text>
                 </Card>
+
                 <Card>
-                    <Grid style={{marginBottom:100}}>
-                        <Col size={80}>
-                            <Text style={{marginBottom: 10}} onPress={() => navigate('Confirm', { item: 'item' })}>
-                                Payment on Delivery {'\n'} Message for payment on delivery what it means for customer
-                            </Text>
-                        </Col>
-                        <Col size={20}><Icon color='blue' name='done' /></Col>
-                    </Grid>
+                    <View style={styles.alternativeLayoutButtonContainer}>
+                        <Text style={{marginBottom: 10}} onPress={() => navigate('Confirm', { item: 'item' })}>
+                            Payment on Delivery {'\n'} Message for payment on delivery what it means for customer
+                        </Text>
+                        <Icon onPress={() => navigate('Confirm', {paymentType: 'Payment on Delivery'})} style={{paddingLeft:45, }} backgroundColor='white' color='blue' name='arrow-forward' />
+                    </View>
                 </Card>
                 {/*<Icon color='blue' name='arrowright' />*/}
                 <Card>
-                    <Grid style={{marginBottom:100}}>
-                        <Col size={90}>
-                            <Text style={{marginBottom: 10}} onPress={() => navigate('Confirm', { item: 'item' })}>
-                                Online over Phone/Email {'\n'} what it means to order online over phone or email
-                            </Text>
-                        </Col>
-                        <Col size={10}><Text> => </Text></Col>
-                    </Grid>
+                    <View style={styles.alternativeLayoutButtonContainer}>
+                        <Text style={{marginBottom: 10}} onPress={() => navigate('Confirm', { item: 'item' })}>
+                            Online over Phone/Email {'\n'} what it means to order online over phone or email
+                        </Text>
+                        <Icon onPress={() => navigate('Confirm', {paymentType: 'Online over Phone/Email'})} color='blue' name='arrow-forward' />
+                    </View>
                 </Card>
 
-
-                <View style={styles.alternativeLayoutButtonContainer}>
-                    <Button
-                        onPress={() => navigate('Confirm')}
-                        title="Confirm"
-                    />
-                    <Button
-                        onPress={this._onPressButton}
-                        title="OK!"
-                        color="#841584"
-                    />
-                </View>
             </View>
         );
     }
