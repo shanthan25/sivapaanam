@@ -22,6 +22,12 @@ export default class ButtonBasics extends Component {
     _onPressButton() {
         Alert.alert('You tapped the button!')
     }
+    setPaymentType(value) {
+        const { navigate } = this.props.navigation;
+        global.PaymentType = value;
+        console.log(global.PaymentType);
+        navigate('Confirm')
+    }
 
     render() {
         const { navigate } = this.props.navigation;
@@ -39,7 +45,7 @@ export default class ButtonBasics extends Component {
                         <Text style={{marginBottom: 10}} onPress={() => navigate('Confirm', { item: 'item' })}>
                             Payment on Delivery {'\n'} Message for payment on delivery what it means for customer
                         </Text>
-                        <Icon onPress={() => navigate('Confirm', {paymentType: 'Payment on Delivery'})} style={{paddingLeft:45, }} backgroundColor='white' color='blue' name='arrow-forward' />
+                        <Icon onPress={() => this.setPaymentType('Payment on Delivery')} style={{paddingLeft:45, }} backgroundColor='white' color='blue' name='arrow-forward' />
                     </View>
                 </Card>
                 {/*<Icon color='blue' name='arrowright' />*/}
@@ -48,7 +54,7 @@ export default class ButtonBasics extends Component {
                         <Text style={{marginBottom: 10}} onPress={() => navigate('Confirm', { item: 'item' })}>
                             Online over Phone/Email {'\n'} what it means to order online over phone or email
                         </Text>
-                        <Icon onPress={() => navigate('Confirm', {paymentType: 'Online over Phone/Email'})} color='blue' name='arrow-forward' />
+                        <Icon onPress={() => this.setPaymentType('Online over Phone/Email')} color='blue' name='arrow-forward' />
                     </View>
                 </Card>
 

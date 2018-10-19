@@ -19,13 +19,14 @@ export default class Shipping extends Component {
     }
 
     render() {
+        global.address = '497, Evergreen Road Roseville, CA 95673';
         const { navigate } = this.props.navigation;
         return (
             <View style={styles.container}>
                 <Image source={require('../images/shipping.jpg')}/>
                 <Card title={'Shipping To'}>
                     <Text style={{marginBottom: 10}} onPress={() => navigate('ProductView', { item: 'item' })}>
-                        497, Evergreen Road Roseville {'\n'} CA 95673
+                        {global.address}
                     </Text>
                 </Card>
                 {/*isSelected={(value) => value=='express' ? 'true' : 'false'}*/}

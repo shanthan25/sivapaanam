@@ -35,13 +35,15 @@ class Cart extends Component {
     }
     setData() {
         AsyncStorage.setItem('myCart',JSON.stringify(this.state.pro));  console.log('item updated '+JSON.stringify(this.state.pro));
+        this.fetchData();
     }
     _onNumChange (num) {
         if (this.props.onNumChange) this.props.onNumChange(num);
     };
-    _increase (item: any) { this.setData();      console.log('val '+item.myQuantity);
+    _increase (item: any) {       console.log('val 1'+item.myQuantity);
         //console.log(this.state);
         item.myQuantity++;
+        this.setData();
         /*if (this.state.disabled) return;
         if (this.state.max > item.myQuantity) {
             var num = item.myQuantity + 1;
@@ -52,8 +54,9 @@ class Cart extends Component {
             this._onNumChange(num);
         }*/
     };
-    _decrease (item: any) {  this.setData();        console.log('val'+item.myQuantity);
+    _decrease (item: any) {          console.log('val 2'+item.myQuantity);
         item.myQuantity--;
+        this.setData();
         /*if (this.state.disabled) return;
         if (this.state.min < item.myQuantity) {
             var num = item.myQuantity - 1;
